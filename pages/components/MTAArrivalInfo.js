@@ -24,9 +24,18 @@ class MTAArrivalInfo extends React.Component {
       const minutesToArrival = this.getDiffInMinutes(this.state.now, new Date(arrival.arrivalTime * 1000));
       
       return (
-        <div key={idx}>
-          <span style={{ fontWeight: 'bold' }}>{arrival.routeId}</span> - {minutesToArrival} min
-        </div>
+        <>
+          <style jsx>{`
+            .arrival-line {
+              display: flex;
+              align-items: center;
+            }
+          `}</style>
+          <div className={'arrival-line'} key={idx}>
+            <img src={`http://web.mta.info/siteimages/subwaybullets/36px/${arrival.routeId}.png`} />
+            &nbsp; {minutesToArrival} min
+          </div>
+        </>
       );
     });
   }
