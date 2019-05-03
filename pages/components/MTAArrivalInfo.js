@@ -7,6 +7,7 @@ class MTAArrivalInfo extends React.Component {
     super(props);
 
     this.state = {
+      error: this.props.arrivalInfo.error,
       arrivalInfo: this.props.arrivalInfo,
       now: new Date(this.props.arrivalInfo.updatedOn * 1000),
     };
@@ -18,7 +19,7 @@ class MTAArrivalInfo extends React.Component {
   }
 
   getNextArrivals = (schedule) => {
-    const nextArrivals = schedule.slice(0, 5); // Take the next 5 arrivals
+    const nextArrivals = schedule.slice(0, 12); // Take the next 12 arrivals
 
     return nextArrivals.map((arrival, idx) => {
       const minutesToArrival = this.getDiffInMinutes(this.state.now, new Date(arrival.arrivalTime * 1000));
@@ -40,9 +41,19 @@ class MTAArrivalInfo extends React.Component {
     });
   }
 
+  getErrorState = () => {
+    return (
+      <>
+        Sorry, the MTA's API has decided not to work right now. Please try again later.
+      </>
+    );
+  }
+
   render() {
     const updatedOnDate = this.state.now;
     const updatedOnStr = `${updatedOnDate.toLocaleDateString()} ${updatedOnDate.toLocaleTimeString()}`;
+
+    if (this.state.error) return this.getErrorState();
 
     return (
       <section>
