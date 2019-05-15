@@ -5,10 +5,12 @@ const JFK19_STOPS = {
   pennStationIND: {
     id: 'A28',
     feedId: 26, // IND feed id
+    canonicalName: 'Penn Station (A/C/E)',
   },
   pennStationIRT: {
     id: '128', 
     feedId: 1, // IRT feed id
+    canonicalName: 'Penn Station (2/3)',
   },
   hudsonYards: {
     id: null,
@@ -16,18 +18,41 @@ const JFK19_STOPS = {
   },
 };
 
-function getArrivalInfo(stop = JFK19_STOPS.pennStationIND) {
-  const client = new MTA({
-    key: apiKey,
-    feed_id: stop.feedId,
-  });
-  
-  return client.schedule(stop.id)
-    .catch((err) => { 
-      console.error(err);
-      return { error: true };
+function getArrivalInfo(stops = [JFK19_STOPS.pennStationIND]) {
+  const mtaPromises = [];
+
+  stops.forEach(stop => {
+    const client = new MTA({
+      key: apiKey,
+      feed_id: stop.feedId,
     });
+    mtaPromises.push(
+      client.schedule(stop.id)
+        .then(result => {
+          return {
+            ...stop,
+            ...result
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          return { 
+            error: true,
+            ...stop
+          };
+        })
+    );
+  });
+
+  return Promise.all(mtaPromises);
+  // return client.schedule(stop.id)
+  //   .catch((err) => { 
+  //     console.error(err);
+  //     return { error: true };
+  //   });
 }
+
+// getArrivalInfo()
 
 module.exports = {
   getArrivalInfo,

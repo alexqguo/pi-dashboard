@@ -7,10 +7,11 @@ class MTAArrivalInfo extends React.Component {
     super(props);
 
     this.state = {
-      error: this.props.arrivalInfo.error,
       arrivalInfo: this.props.arrivalInfo,
-      now: new Date(this.props.arrivalInfo.updatedOn * 1000),
+      now: new Date(),
     };
+
+    console.log(this.state);
   }
 
   getDiffInMinutes = (first, second) => {
@@ -41,10 +42,40 @@ class MTAArrivalInfo extends React.Component {
     });
   }
 
-  getErrorState = () => {
+  getArrivalColumnsForTrainLine(arrivalInfo) {
+    if (arrivalInfo.error) return this.getErrorStateForArrivalInfo(arrivalInfo);
+
+    const northbound = arrivalInfo.schedule[arrivalInfo.id].N;
+    const southbound = arrivalInfo.schedule[arrivalInfo.id].S;
+
+    return (
+      <section className={'arrival-block'} key={arrivalInfo.id}>
+        <style jsx>{`
+          .arrival-grid, .arrival-block {
+            display: inline-block;
+            margin-right: 20px;
+          }
+        `}</style>
+
+        <h3>{ arrivalInfo.canonicalName }</h3>
+
+        <div className={'arrival-grid'}>
+          <h3 style={{ marginTop: 15 }}>Northbound</h3>
+          {this.getNextArrivals(northbound)}
+        </div>
+
+        <div className={'arrival-grid'}>
+          <h3 style={{ marginTop: 15 }}>Southbound</h3>
+          {this.getNextArrivals(southbound)}
+        </div>
+      </section>
+    );
+  }
+
+  getErrorStateForArrivalInfo = (arrivalInfo) => {
     return (
       <>
-        Sorry, the MTA's API has decided not to work right now. Please try again later.
+        Sorry, the MTA's API has decided not to work right now for <strong>{ arrivalInfo.canonicalName }</strong>.
       </>
     );
   }
@@ -53,29 +84,11 @@ class MTAArrivalInfo extends React.Component {
     const updatedOnDate = this.state.now;
     const updatedOnStr = `${updatedOnDate.toLocaleDateString()} ${updatedOnDate.toLocaleTimeString()}`;
 
-    if (this.state.error) return this.getErrorState();
-
     return (
       <section>
-        <style jsx>{`
-          .arrival-grid {
-            display: inline-block;
-            margin-right: 20px;
-          }
-        `}</style>
+        <div style={{ fontSize: 12, marginBottom: 20 }}>Updated on: {updatedOnStr}</div>
 
-        <h2>Penn Station arrival times (A/C/E)</h2>
-        <div style={{ fontSize: 12 }}>Updated on: {updatedOnStr}</div>
-
-        <div className={'arrival-grid'}>
-          <h3 style={{ marginTop: 15 }}>Northbound</h3>
-          {this.getNextArrivals(this.state.arrivalInfo.schedule.A28.N)}
-        </div>
-
-        <div className={'arrival-grid'}>
-          <h3 style={{ marginTop: 15 }}>Southbound</h3>
-          {this.getNextArrivals(this.state.arrivalInfo.schedule.A28.S)}
-        </div>
+        {this.state.arrivalInfo.map(arrival => this.getArrivalColumnsForTrainLine(arrival))}
       </section>
     );
   }
