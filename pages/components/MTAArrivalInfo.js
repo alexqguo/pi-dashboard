@@ -10,8 +10,6 @@ class MTAArrivalInfo extends React.Component {
       arrivalInfo: this.props.arrivalInfo,
       now: new Date(),
     };
-
-    console.log(this.state);
   }
 
   getDiffInMinutes = (first, second) => {
@@ -23,6 +21,7 @@ class MTAArrivalInfo extends React.Component {
     const nextArrivals = schedule.slice(0, 12); // Take the next 12 arrivals
 
     return nextArrivals.map((arrival, idx) => {
+      const imageKey = arrival.routeId.replace('X', 'd'); // For express trains. Not sure why it's a 'd' instead of 'X'
       const minutesToArrival = this.getDiffInMinutes(this.state.now, new Date(arrival.arrivalTime * 1000));
       
       return (
@@ -34,7 +33,7 @@ class MTAArrivalInfo extends React.Component {
             }
           `}</style>
           <div className={'arrival-line'} key={idx}>
-            <img src={`http://web.mta.info/siteimages/subwaybullets/36px/${arrival.routeId}.png`} />
+            <img src={`http://web.mta.info/siteimages/subwaybullets/36px/${imageKey}.png`} />
             &nbsp; {minutesToArrival} min
           </div>
         </>

@@ -1,6 +1,7 @@
 const MTA = require('mta-gtfs');
 const apiKey = require('./secrets').mtaApiKey;
 
+// See http://datamine.mta.info/list-of-feeds for feed IDs
 const JFK19_STOPS = {
   pennStationIND: {
     id: 'A28',
@@ -12,9 +13,10 @@ const JFK19_STOPS = {
     feedId: 1, // IRT feed id
     canonicalName: 'Penn Station (2/3)',
   },
-  hudsonYards: {
-    id: null,
-    client: null,
+  hudsonYardsIFT: {
+    id: '726',
+    feedId: 51, // IFT feed id
+    canonicalName: 'Hudson Yards (7)',
   },
 };
 
@@ -52,7 +54,6 @@ function getArrivalInfo(stops = [JFK19_STOPS.pennStationIND]) {
   //   });
 }
 
-// getArrivalInfo()
 
 module.exports = {
   getArrivalInfo,
