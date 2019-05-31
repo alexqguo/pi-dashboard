@@ -15,6 +15,7 @@
     "isomorphic-unfetch": "^3.0.0",
     "mta-gtfs": "^1.1.0",
     "next": "^8.1.0",
+    "node-dash-button": "^0.6.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
