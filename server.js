@@ -27,5 +27,5 @@ app.prepare().then(() => {
 
   dash.on('detected', () => {
     console.log(`Appointment with Dr. Java created on ${Date.now()}!`);
-  })
+  });
 })
