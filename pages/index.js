@@ -17,6 +17,8 @@ class IndexPage extends React.Component {
             margin: 0;
             padding: 50px;
             font-family: 'Roboto', sans-serif;
+            color: white;
+            background-color: #111;
           }
           h2, h3, h4, h5 {
             margin: 0;
