@@ -9,7 +9,7 @@ export default (props) => {
   const { arrival } = props;
   // For express trains. Not sure why it's a 'd' instead of 'X'
   const imageKey = arrival.routeId.replace('X', 'd');
-  const minutesToArrival = getDiffInMinutes(new Date(), new Date(arrival.arrivalTime * 1000));
+  const minutesToArrival = getDiffInMinutes(new Date(), new Date(arrival.arrivalTime));
 
   return (
     <>

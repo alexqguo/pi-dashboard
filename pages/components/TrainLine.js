@@ -14,7 +14,8 @@ class TrainLine extends React.Component {
     };
   }
 
-  renderErrorState(arrivalInfo) {
+  renderErrorState() {
+    const { arrivalInfo } = this.props;
     return (
       <>
         Sorry, the MTA's API has decided not to work right now for <strong>{ arrivalInfo.canonicalName }</strong>.
@@ -22,17 +23,20 @@ class TrainLine extends React.Component {
     );
   }
 
-  renderContent(arrivalInfo) {
+  renderContent() {
+    const { arrivalInfo } = this.props;
+
     return (
       <>
-        <ArrivalColumn name="Northbound" schedule={arrivalInfo.schedule[arrivalInfo.id].N} />
-        <ArrivalColumn name="Southbound" schedule={arrivalInfo.schedule[arrivalInfo.id].S} />
+        <ArrivalColumn name="Northbound" schedule={arrivalInfo.schedule[`${arrivalInfo.id}N`]} />
+        <ArrivalColumn name="Southbound" schedule={arrivalInfo.schedule[`${arrivalInfo.id}S`]} />
       </>
     );
   }
 
   render() {
     const { arrivalInfo } = this.props;
+    console.log(arrivalInfo)
 
     return (
       <section className={'arrival-block'} key={arrivalInfo.id}>
@@ -60,7 +64,7 @@ class TrainLine extends React.Component {
           &nbsp;<span className={`freshness ${arrivalInfo.error ? 'stale' : ''}`}></span>
         </h3>
 
-        {arrivalInfo.error ? this.renderErrorState(arrivalInfo) : this.renderContent(arrivalInfo)}
+        {arrivalInfo.error ? this.renderErrorState() : this.renderContent()}
       </section>
     );
   }

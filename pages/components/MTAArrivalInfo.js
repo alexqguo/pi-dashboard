@@ -1,6 +1,12 @@
 import React from 'react';
 import TrainLine from './TrainLine';
 
+const endpoints = [
+  'penn-station-ind',
+  'penn-station-irt',
+  'hudson-yards-ift',
+];
+
 class MTAArrivalInfo extends React.Component {
 
   static pollingInterval = 50000;
@@ -15,11 +21,18 @@ class MTAArrivalInfo extends React.Component {
 
   async getData() {
     try {
-      const result = await fetch('/data/mta')
-      const arrivalInfo = await result.json();
-      return arrivalInfo;
-    } catch (e) {
+      const result = [];
+      const calls = endpoints.map(endpoint => fetch(`/data/mta-feed/${endpoint}`));
+      const feeds = await Promise.all(calls);
 
+      for (let i = 0; i < feeds.length; i++) {
+        result.push(await feeds[i].json());
+      }
+
+      return result;
+    } catch (e) {
+      // Lol
+      console.error(e);
     }
   }
 

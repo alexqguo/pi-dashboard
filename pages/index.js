@@ -24,8 +24,8 @@ class IndexPage extends React.Component {
             margin: 0;
           }
         `}</style>
-  
-        <h1>Dashboard</h1>
+
+        <h1>Nearby Train Departure Times</h1>
         <MTAArrivalInfo />
       </div>
     );
