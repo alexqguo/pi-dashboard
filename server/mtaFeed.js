@@ -77,6 +77,8 @@ const getFeed = async (stop) => {
 
         resolve(decorateResults(results, stopInfo));
       } else {
+        console.error(`Returned status code ${resp.statusCode}`);
+        console.error(err);
         resolve({ error: true });
       }
     });
