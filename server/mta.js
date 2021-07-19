@@ -9,7 +9,7 @@ const JFK19_STOPS = {
     canonicalName: 'Penn Station (A/C/E)',
   },
   pennStationIRT: {
-    id: '128', 
+    id: '128',
     feedId: 1, // IRT feed id
     canonicalName: 'Penn Station (2/3)',
   },
@@ -38,7 +38,7 @@ function getArrivalInfo(stops = [JFK19_STOPS.pennStationIND]) {
         })
         .catch(err => {
           console.error(err);
-          return { 
+          return {
             error: true,
             ...stop
           };
@@ -48,7 +48,7 @@ function getArrivalInfo(stops = [JFK19_STOPS.pennStationIND]) {
 
   return Promise.all(mtaPromises);
   // return client.schedule(stop.id)
-  //   .catch((err) => { 
+  //   .catch((err) => {
   //     console.error(err);
   //     return { error: true };
   //   });
