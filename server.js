@@ -12,6 +12,8 @@ const dataRouter = require('./server/routes');
 app.prepare().then(() => {
   const server = express();
 
+  server.disable('etag');
+
   server.use('/data', dataRouter);
 
   server.get('*', (req, res) => {
